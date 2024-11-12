@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `location`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `location` (
-  `locationID` varchar(255) DEFAULT NULL,
+  `locationID` varchar(255) NOT NULL,
   `locationName` varchar(150) DEFAULT NULL,
   `type` varchar(50) DEFAULT NULL,
   `county` varchar(50) DEFAULT NULL,
@@ -32,7 +32,8 @@ CREATE TABLE `location` (
   `street` varchar(50) DEFAULT NULL,
   `building` varchar(50) DEFAULT NULL,
   `floor` varchar(50) DEFAULT NULL,
-  `postcode` varchar(10) DEFAULT NULL
+  `postcode` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`locationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,9 +54,13 @@ DROP TABLE IF EXISTS `ratings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ratings` (
-  `userID` varchar(255) DEFAULT NULL,
-  `locationID` varchar(255) DEFAULT NULL,
-  `rating` enum('Like','Dislike') DEFAULT NULL
+  `rating` enum('Like','Dislike') DEFAULT NULL,
+  `userID` varchar(255) NOT NULL,
+  `locationID` varchar(255) NOT NULL,
+  KEY `ratings_user_UserID_fk` (`userID`),
+  KEY `ratings_location_locationID_fk` (`locationID`),
+  CONSTRAINT `ratings_location_locationID_fk` FOREIGN KEY (`locationID`) REFERENCES `location` (`locationID`),
+  CONSTRAINT `ratings_user_UserID_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -102,4 +107,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2024-11-12 10:00:15
+-- Dump completed on 2024-11-12 12:24:10
